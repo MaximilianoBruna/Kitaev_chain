@@ -73,7 +73,6 @@ for term, coefficient in H_qubit.terms.items():
         # Unimos las letras (X, Y, Z) con sus índices
         pauli_string = " ".join([f"{pauli}{idx}" for idx, pauli in term])
     
-    # Formateamos el coeficiente para mostrar solo 2 decimales y su signo
     coef_str = f"{coefficient.real:>5.2f}"
     print(f" {coef_str} * [ {pauli_string:^10} ]")
 
