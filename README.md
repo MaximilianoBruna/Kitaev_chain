@@ -1,6 +1,6 @@
 # Simulación Clásica y Cuántica de la Cadena de Kitaev: Fases Topológicas y Modos de Majorana
 
-![Estado del Proyecto](https://img.shields.io/badge/Estado-Completado-success)
+![Estado del Proyecto](https://img.shields.io/badge/Estado-En%20progreso-yellow)
 ![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![Qiskit](https://img.shields.io/badge/Qiskit-IBM_Quantum-purple)
 
