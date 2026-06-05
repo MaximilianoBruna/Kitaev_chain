@@ -56,7 +56,7 @@ pip install qiskit qiskit-ibm-runtime
 ---
 ## Uso y Ejecución
 
-1. **Simulación Clásica: Diagonalización Exacta (ED)**
+1. **Simulación Clásica: Diagonalización Exacta (ED):**
 Para correr la solución exacta basada en la matriz de Bogoliubov-de Gennes (BdG) de muchos cuerpos y mapear la física exacta del sistema, ejecuta:
 ```bash
 python Kitaev_chain_main.py
@@ -64,7 +64,7 @@ python Kitaev_chain_main.py
 * Dinámica Interna *: El script calcula las energías y los estados propios barriendo el potencial químico (μ). Para cada estado, evalúa el valor esperado del operador de número de partículas y el operador de correlación de borde de Majorana.
 * Clasificación por Paridad ($Z^2$) *: El código proyecta cada autoestado sobre el operador de paridad fermiónica. Clasifica automáticamente los resultados en dos arreglos independientes: Paridad Par (+1) y Paridad Impar (-1). Esto permite una visualización limpia en el gráfico final sin cruces caóticos de líneas, evidenciando analíticamente cómo la degeneración del estado fundamental se vuelve perfecta en la fase topológica ($∣μ∣<2∣t∣$).
 
-2. **Algoritmo VQE Clásico (Optimización con Ansatz Local)**
+2. **Algoritmo VQE Clásico (Optimización con Ansatz Local):**
 Para evaluar el desempeño del algoritmo cuántico variacional utilizando una representación matricial exacta en la máquina local
 ```bash
 python VQE.py
@@ -72,5 +72,26 @@ python VQE.py
 * Arquitectura del Ansatz: Construye un circuito parametrizado profundo con un diseño estructural de dos capas cuánticas (layers=2) para un sistema de N=3 espines/qubits. Aplica rotaciones locales $R_y(θ)$ y $R_z(θ)$ combinadas con entrelazamiento no local mediante compuertas CNOT, controlando un total de 18 parámetros angulares independientes.
 * Mitigación de Mínimos Locales: Para evitar quedar atrapado en mínimos locales (problema recurrente debido a los Barren Plateaus), el loop ejecuta 3 intentos aleatorios independientes (attempts=3) para cada valor de μ. El optimizador clásico COBYLA se encarga de minimizar la función de costo calculando los valores esperados energéticos paso a paso.
 * Salida: Grafica el número de partículas promedio comparando la curva obtenida mediante la optimización cuántica variacional heurística frente al resultado teórico de la diagonalización clásica.
+
+3. **Ejecución Cuántica Real: Qiskit Runtime Primitives (IBM QPU):**
+
+Para adaptar y transpolar el circuito variacional con el objetivo de ejecutarlo sobre procesadores cuánticos NISQ reales en la nube de IBM Quantum:
+```bash
+python VQE_for_QC.py
+```
+* Compilación y Topología Física (ISA): A diferencia de la simulación teórica, este código implementa restricciones de hardware real. Utiliza generate_preset_pass_manager (con un nivel de optimización básico) para traducir las compuertas lógicas abstractas del Ansatz al mapa físico de acoplamientos (líneas físicas de CNOT) del chip seleccionado. Del mismo modo, el Hamiltoniano cuántico se reestructura automáticamente usando .apply_layout().
+* Uso Eficiente de Sesiones (Qiskit Runtime Sessions): Para la optimización variacional con hardware real, el script inicializa el primitivo RuntimeEstimator configurado en el backend físico. El algoritmo está programado para enviar la tupla de datos (circuito compilado, Hamiltoniano mapeado y parámetros clásicos) en formato PUB de la V2 de Qiskit.
+* Recomendación operativa: Para reducir los tiempos de cola en el clúster cuántico de IBM, se sugiere envolver este bucle iterativo de COBYLA dentro de un gestor de contexto with Session(backend=backend) as session:, garantizando que la QPU procese secuencialmente los 25 pasos máximos programados (maxiter=25) sin volver a formarse en la cola general en cada iteración.
+
+
+## Referencias Principales
+Este proyecto fue fuertemente inspirado y guiado por la literatura científica clave en el área de la materia condensada topológica y los algoritmos variacionales cuánticos:
+
+* Kitaev, A. Y. (2001). Unpaired Majorana fermions in quantum wires. Physics-Uspekhi.
+* Rančić, M. J. (2023). Exactly solving the Kitaev chain and generating Majorana-zero-modes out of noisy qubits.
+* McClean, J. R., et al. (2016). The theory of variational hybrid quantum-classical algorithms.
+* Cerezo, M., et al. (2021). Variational quantum algorithms. Nature Reviews Physics.
+
+
 Ain't nobody here but us chickens
 
