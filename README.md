@@ -39,7 +39,7 @@ El repositorio está organizado de la siguiente manera:
 
 ---
 
-## 🛠️ Requisitos e Instalación
+## Requisitos e Instalación
 
 Para ejecutar los scripts locales (`Kitaev_chain_main.py` y `VQE.py`), necesitas las siguientes librerías de Python:
 
@@ -53,8 +53,24 @@ Para el script cuántico (VQE_for_QC.py), es necesario instalar Qiskit y configu
 ```bash
 pip install qiskit qiskit-ibm-runtime
 ```
+---
+## Uso y Ejecución
 
+1. **Simulación Clásica: Diagonalización Exacta (ED)**
+Para correr la solución exacta basada en la matriz de Bogoliubov-de Gennes (BdG) de muchos cuerpos y mapear la física exacta del sistema, ejecuta:
+```bash
+python Kitaev_chain_main.py
+```
+* Dinámica Interna *: El script calcula las energías y los estados propios barriendo el potencial químico (μ). Para cada estado, evalúa el valor esperado del operador de número de partículas y el operador de correlación de borde de Majorana.
+* Clasificación por Paridad ($Z^2$) *: El código proyecta cada autoestado sobre el operador de paridad fermiónica. Clasifica automáticamente los resultados en dos arreglos independientes: Paridad Par (+1) y Paridad Impar (-1). Esto permite una visualización limpia en el gráfico final sin cruces caóticos de líneas, evidenciando analíticamente cómo la degeneración del estado fundamental se vuelve perfecta en la fase topológica ($∣μ∣<2∣t∣$).
 
-
+2. **Algoritmo VQE Clásico (Optimización con Ansatz Local)**
+Para evaluar el desempeño del algoritmo cuántico variacional utilizando una representación matricial exacta en la máquina local
+```bash
+python VQE.py
+```
+* Arquitectura del Ansatz: Construye un circuito parametrizado profundo con un diseño estructural de dos capas cuánticas (layers=2) para un sistema de N=3 espines/qubits. Aplica rotaciones locales $R_y(θ)$ y $R_z(θ)$ combinadas con entrelazamiento no local mediante compuertas CNOT, controlando un total de 18 parámetros angulares independientes.
+* Mitigación de Mínimos Locales: Para evitar quedar atrapado en mínimos locales (problema recurrente debido a los Barren Plateaus), el loop ejecuta 3 intentos aleatorios independientes (attempts=3) para cada valor de μ. El optimizador clásico COBYLA se encarga de minimizar la función de costo calculando los valores esperados energéticos paso a paso.
+* Salida: Grafica el número de partículas promedio comparando la curva obtenida mediante la optimización cuántica variacional heurística frente al resultado teórico de la diagonalización clásica.
 Ain't nobody here but us chickens
 
