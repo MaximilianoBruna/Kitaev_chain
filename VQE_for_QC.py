@@ -1,6 +1,8 @@
 from qiskit.circuit import QuantumCircuit, ParameterVector
 import numpy as np
 
+'''Este código esta hecho para ser corrido en un computador cuántico real, en la línea 182 se pide el token para conectar a uno'''
+
 '''Hamiltoniano de la cadena'''
 Id = np.eye(2,dtype= 'float') 
 sx = np.array([[0,1],[1,0]],dtype=complex)
@@ -176,20 +178,20 @@ print("VQE Energy Found:", result.fun)
 from qiskit_ibm_runtime import QiskitRuntimeService, EstimatorV2 as RuntimeEstimator
 from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
 
-# 1. Log in and find a computer
-service = QiskitRuntimeService(channel="ibm_quantum_platform", token="kn_Ho35AK2S49tmL0qMV3JLDnke70UMgCv3Uhb8pLtTT")
+#  Log in and find a computer
+service = QiskitRuntimeService(channel="ibm_quantum_platform", token="TOKEN_GOES_HERE") #No way im putting mine here lol
 backend = service.least_busy(operational=True, simulator=False, min_num_qubits=3)
 print(f"Connected to {backend.name}")
 
-# 2. V2 REQUIREMENT: Transpile the theoretical circuit to physical hardware (ISA)
+# V2 REQUIREMENT: Transpile the theoretical circuit to physical hardware (ISA)
 print("Compiling circuit to physical hardware layout...")
 pm = generate_preset_pass_manager(backend=backend, optimization_level=1)
 isa_circuit = pm.run(ansatz_circuit)
 
-# 3. V2 REQUIREMENT: Update the Hamiltonian to match the new physical wiring
+#  V2 REQUIREMENT: Update the Hamiltonian to match the new physical wiring
 isa_hamiltonian = qubit_hamiltonian.apply_layout(isa_circuit.layout)
 
-# 4. Initialize the hardware Estimator using 'mode'
+#  Initialize the hardware Estimator using 'mode'
 hardware_estimator = RuntimeEstimator(mode=backend)
 
 def hardware_cost_function(angle_values):
@@ -201,12 +203,12 @@ def hardware_cost_function(angle_values):
     job = hardware_estimator.run([pub])
     
     result = job.result()
-    # Extract the expectation value
+    # Valor de expectación
     energy = result[0].data.evs
     
     return float(energy)
 
-# 5. Run the VQE on the real Quantum Computer!
+#  Run the VQE on the real QC
 initial_angles = np.random.uniform(0, 2*np.pi, 18)
 
 print("Starting hardware optimization. This may take hours depending on the queue...")
@@ -216,5 +218,8 @@ result = minimize(hardware_cost_function,
                   options={'maxiter': 25}) # Keep this low for sanity!
 
 print("========================================")
-print(f"Real Hardware VQE Energy Found: {result.fun:.6f}")
+print(f"Real VQE Energy Found: {result.fun:.6f}")
 print("========================================")
+
+#Remember to make a plot here, also should change this code to make a session and send that instead
+#of sending the code over and over again to the QC, that's how i lost all that time anyways.
