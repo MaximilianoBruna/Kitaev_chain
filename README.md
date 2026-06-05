@@ -13,10 +13,10 @@ Este repositorio contiene el código fuente, los gráficos de resultados y el in
 
 ## Descripción del Proyecto
 
-La cadena de Kitaev es un modelo teórico fundamental para la computación cuántica topológica tolerante a fallos. En este proyecto, evitamos depender de "cajas negras" prefabricadas y construimos la física desde los cimientos:
+La cadena de Kitaev es un modelo teórico fundamental para la computación cuántica topológica tolerante a fallos. En este proyecto, se evita depender de "cajas negras" prefabricadas:
 1. **Diagonalización Exacta (ED):** Construcción manual del Hamiltoniano de Bogoliubov-de Gennes (BdG) y uso de la transformación de Jordan-Wigner para obtener el espectro de muchos cuerpos.
 2. **VQE Clásico:** Desarrollo de un Eigensolver Cuántico Variacional "from scratch" implementando un Ansatz parametrizado y optimizando la energía del estado fundamental mediante el optimizador clásico COBYLA.
-3. **VQE en Hardware Cuántico (IBM):** Adaptación del circuito para su transpilación y ejecución en computadores cuánticos reales utilizando Qiskit Runtime Primitives y el manejo de sesiones (Sessions).
+3. **VQE en Hardware Cuántico (IBM):** Adaptación del circuito para su transpilación y ejecución en computadores cuánticos reales utilizando Qiskit Runtime Primitives y el manejo de sesiones (Sessions) *(Fase actualmente en progreso)*..
 
 Los resultados confirman el cierre del gap de energía, la degeneración del estado fundamental en el régimen topológico ($|\mu| < 2|t|$), la conservación de la paridad macroscópica con números de partículas fraccionarios, y las firmas de correlación de borde no locales que caracterizan a los fermiones de Majorana.
 
@@ -45,6 +45,14 @@ Para ejecutar los scripts locales (`Kitaev_chain_main.py` y `VQE.py`), necesitas
 
 ```bash
 pip install numpy scipy matplotlib
+
+```
+
+Para el script cuántico (VQE_for_QC.py), es necesario instalar Qiskit y configurar tus credenciales de IBM Quantum:
+
+```bash
+pip install qiskit qiskit-ibm-runtime
+```
 
 
 
