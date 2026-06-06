@@ -26,7 +26,7 @@ Los resultados confirman el cierre del gap de energía, la degeneración del est
 
 El repositorio está organizado de la siguiente manera:
 
-* **`Kitaev_chain_main.py`**: Script principal de simulación clásica. Construye y diagonaliza exactamente el Hamiltoniano BdG. Incluye el cálculo del espectro de energía, el número de partículas y las correlaciones de borde separadas por paridad (par/impar).
+* **`Kitaev_chain_main.py`**: Script principal de simulación clásica. Construye y diagonaliza exactamente el Hamiltoniano BdG. Incluye el cálculo del espectro de energía, el número de partículas y las correlaciones de borde separadas por paridad (par/impar). (en caso de no poder ver el informe en Github, descargarlo y debería verse normal. En caso contrario avisar inmediatamente a mbruna@usm.cl)
 * **`VQE.py`**: Implementación matricial (basada en NumPy y SciPy) del algoritmo VQE. Define los operadores de espín (Pauli), la transformación de Jordan-Wigner y minimiza la función de costo iterativamente.
 * **`VQE_for_QC.py`**: Script preparado para infraestructura cuántica real. Utiliza `qiskit.circuit` y `qiskit_ibm_runtime` para adaptar el Hamiltoniano teórico a la topología física (ISA) del hardware cuántico de IBM.
 * **`Informe_Kitaev_Chain-4.pdf`**: Documento detallado tipo paper (formato Physical Review) que consolida la metodología, las matemáticas subyacentes, y el análisis físico de los resultados obtenidos.
@@ -58,7 +58,7 @@ service = QiskitRuntimeService(channel="ibm_quantum_platform", token="TOKEN_AQU�
 **Aviso de Dependencias:** Durante el desarrollo de este proyecto, se detectaron posibles conflictos de versiones entre dependencias clásicas y las herramientas de simulación cuántica. Por ello, **se recomienda encarecidamente crear un entorno virtual limpio de Conda** antes de instalar las librerías.
 
 ### 1. Creación del Entorno Virtual (Recomendado)
-Puedes crear y activar un entorno llamado `kitaev_env` (recomendamos Python 3.10 para máxima compatibilidad con Qiskit) usando los siguientes comandos en tu terminal:
+Se puede crear y activar un entorno llamado `kitaev_env` (recomendamos Python 3.10 para máxima compatibilidad con Qiskit) usando los siguientes comandos en tu terminal:
 
 ```bash
 conda create -n kitaev_env python=3.10
