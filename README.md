@@ -47,12 +47,24 @@ Para ejecutar los scripts locales (`Kitaev_chain_main.py` y `VQE.py`), necesitas
 pip install numpy scipy matplotlib
 
 ```
-
-Para el script cuántico (VQE_for_QC.py), es necesario instalar Qiskit y configurar tus credenciales de IBM Quantum:
+Para el script cuántico (VQE_for_QC.py), es necesario instalar Qiskit y configurar tus credenciales de IBM Quantum dentro del propio código:
 
 ```bash
 pip install qiskit qiskit-ibm-runtime
 ```
+```bash
+service = QiskitRuntimeService(channel="ibm_quantum_platform", token="TOKEN_AQUÍ")
+```
+**Aviso de Dependencias:** Durante el desarrollo de este proyecto, se detectaron posibles conflictos de versiones entre dependencias clásicas y las herramientas de simulación cuántica. Por ello, **se recomienda encarecidamente crear un entorno virtual limpio de Conda** antes de instalar las librerías.
+
+### 1. Creación del Entorno Virtual (Recomendado)
+Puedes crear y activar un entorno llamado `kitaev_env` (recomendamos Python 3.10 para máxima compatibilidad con Qiskit) usando los siguientes comandos en tu terminal:
+
+```bash
+conda create -n kitaev_env python=3.10
+conda activate kitaev_env
+```
+
 ---
 ## Uso y Ejecución
 
@@ -69,7 +81,7 @@ Para evaluar el desempeño del algoritmo cuántico variacional utilizando una re
 ```bash
 python VQE.py
 ```
-* Arquitectura del Ansatz: Construye un circuito parametrizado profundo con un diseño estructural de dos capas cuánticas (layers=2) para un sistema de N=3 espines/qubits. Aplica rotaciones locales $R_y(θ)$ y $R_z(θ)$ combinadas con entrelazamiento no local mediante compuertas CNOT, controlando un total de 18 parámetros angulares independientes.
+* Arquitectura del Ansatz: Construye un circuito parametrizado profundo con un diseño estructural de dos capas cuánticas (layers=2) para un sistema de $N=3$ espines/qubits. Aplica rotaciones locales $R_y(θ)$ y $R_z(θ)$ combinadas con entrelazamiento no local mediante compuertas CNOT, controlando un total de 18 parámetros angulares independientes.
 * Mitigación de Mínimos Locales: Para evitar quedar atrapado en mínimos locales (problema recurrente debido a los Barren Plateaus), el loop ejecuta 3 intentos aleatorios independientes (attempts=3) para cada valor de μ. El optimizador clásico COBYLA se encarga de minimizar la función de costo calculando los valores esperados energéticos paso a paso.
 * Salida: Grafica el número de partículas promedio comparando la curva obtenida mediante la optimización cuántica variacional heurística frente al resultado teórico de la diagonalización clásica.
 
@@ -82,7 +94,6 @@ python VQE_for_QC.py
 * Compilación y Topología Física (ISA): A diferencia de la simulación teórica, este código implementa restricciones de hardware real. Utiliza generate_preset_pass_manager (con un nivel de optimización básico) para traducir las compuertas lógicas abstractas del Ansatz al mapa físico de acoplamientos (líneas físicas de CNOT) del chip seleccionado. Del mismo modo, el Hamiltoniano cuántico se reestructura automáticamente usando .apply_layout().
 * Uso Eficiente de Sesiones (Qiskit Runtime Sessions): Para la optimización variacional con hardware real, el script inicializa el primitivo RuntimeEstimator configurado en el backend físico. El algoritmo está programado para enviar la tupla de datos (circuito compilado, Hamiltoniano mapeado y parámetros clásicos) en formato PUB de la V2 de Qiskit.
 * Recomendación operativa: Para reducir los tiempos de cola en el clúster cuántico de IBM, se sugiere envolver este bucle iterativo de COBYLA dentro de un gestor de contexto with Session(backend=backend) as session:, garantizando que la QPU procese secuencialmente los 25 pasos máximos programados (maxiter=25) sin volver a formarse en la cola general en cada iteración.
-
 
 ## Referencias Principales
 Este proyecto fue fuertemente inspirado y guiado por la literatura científica clave en el área de la materia condensada topológica y los algoritmos variacionales cuánticos:
