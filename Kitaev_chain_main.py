@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 # --- Construir el Hamiltoniano ---
 
 def buildAndSolve_BdG_hamiltonian(N,mu,t,delta):
-    ''' Construye y Diagonaliza la el hamiltoniano BdG 2n x 2n'''
+    ''' Construye y Diagonaliza la hamiltoniano BdG 2n x 2n'''
     
     H_0 = np.zeros((N,N))
     Delta_M = np.zeros((N,N))
@@ -148,7 +148,6 @@ def Hamiltonian(N,mu,t,delta,corr_op=None):
         hop_hc = np.conjugate(hop.T) # Hermitian conjugate
         
         # Pairing: -delta * (c_dag_j * c_dag_{j+1} + h.c.)
-        # Wait, check paper's exact sign/order for pairing!
         pair = -delta * (c_dag_j @ c_dag_next)
         pair_hc = np.conjugate(pair.T)
         
@@ -257,7 +256,7 @@ plt.savefig('Espectro de energía muchos cuerpos (Paridad).pdf', format='pdf')
 plt.show()
 
 ''' Ahora nos enfocamos en el valor de expectación del número de particulas N,
-    puesto que el Hamiltoniano no conserva el número de particulas (REVISA TUS APUNTES Y EXPLICA ESTO[REVISA LA PARIDAD!!!])
+    puesto que el Hamiltoniano no conserva el número de particulas 
     obtenemos resultados extraños, en un aislante normal el estado base tiene un número entero de particulas fijo. Pero en 
     nuestra fase topologica superconductora este no es el caso debido a que nuestro estado base es una superposición de 
     estados vacíos y pares de Cooper.'''
@@ -272,7 +271,7 @@ def Number_op(N):
 
 ''' Querremos buscar también el valor de expectación del número de correlación de Majorana, pues este
     nos asegurara que el estado cero de energía se encuentra deslocalizado en los dos extremos de la cadena'''
-'''Revisa cómo escribir el operador de correlación para el informe'''
+
 
 def build_correlation_operator(N):
     #Majorana izq
@@ -337,24 +336,13 @@ plt.savefig('Correlación de los majorana.pdf', format='pdf')
 plt.show()
 
 
-
-'''FIGURE 2 del paper de Alicea te arregla el tema del ploteo, la imagen en a) en la fase trivial muestra que gamma_A es el izquierdo
-y Gamma_b el derecho, pero en b) la fase topologica, los pares se agrupan al revés, A es el derecho y B el izquierdo. El 
-arreglo es tan sencillo cómo invertir las definiciones de los gamas que ya tienes. 
-es decir, el majorana derecho es una suma de dos reales (en N,N) y el izquierdo es el imaginario de una resta (en N,1).
-Medio revoltijo xd. Cororearlos por paridad queda para otro día, igual lo tienes abajo. '''
-
-
-
-######################FUCKIN TESTTEO
-
 # ===== Paridad de los majorana ====
 
 N_operador = Number_op(N)
 corr_operador = build_correlation_operator(N)
 P_op = build_parity_operator(N) 
 
-# Instead of dictionaries by index, we create buckets based on Parity
+# Mejor que lo que hice arriba con los diccionarios xd
 mu_even, P_num_even, edge_corr_even = [], [], []
 mu_odd, P_num_odd, edge_corr_odd = [], [], []
 
