@@ -26,7 +26,7 @@ Los resultados confirman el cierre del gap de energía, la degeneración del est
 
 El repositorio está organizado de la siguiente manera:
 
-* **`Kitaev_chain_main.py`**: Script principal de simulación clásica. Construye y diagonaliza exactamente el Hamiltoniano BdG. Incluye el cálculo del espectro de energía, el número de partículas y las correlaciones de borde separadas por paridad (par/impar). (en caso de no poder ver el informe en Github, descargarlo y debería verse normal. En caso contrario avisar inmediatamente a mbruna@usm.cl)
+* **`Kitaev_chain_main.py`**: Script principal de simulación clásica. Construye y diagonaliza exactamente el Hamiltoniano BdG. Incluye el cálculo del espectro de energía, el número de partículas y las correlaciones de borde separadas por paridad (par/impar).
 * **`VQE.py`**: Implementación matricial (basada en NumPy y SciPy) del algoritmo VQE. Define los operadores de espín (Pauli), la transformación de Jordan-Wigner y minimiza la función de costo iterativamente.
 * **`VQE_for_QC.py`**: Script preparado para infraestructura cuántica real. Utiliza `qiskit.circuit` y `qiskit_ibm_runtime` para adaptar el Hamiltoniano teórico a la topología física (ISA) del hardware cuántico de IBM.
 * **`Informe_Kitaev_Chain-4.pdf`**: Documento detallado tipo paper (formato Physical Review) que consolida la metodología, las matemáticas subyacentes, y el análisis físico de los resultados obtenidos.
@@ -41,13 +41,13 @@ El repositorio está organizado de la siguiente manera:
 
 ## Requisitos e Instalación
 
-Para ejecutar los scripts locales (`Kitaev_chain_main.py` y `VQE.py`), necesitas las siguientes librerías de Python:
+Para ejecutar los scripts locales (`Kitaev_chain_main.py` y `VQE.py`), se necesitan las siguientes librerías de Python:
 
 ```bash
 pip install numpy scipy matplotlib
 
 ```
-Para el script cuántico (VQE_for_QC.py), es necesario instalar Qiskit y configurar tus credenciales de IBM Quantum dentro del propio código:
+Para el script cuántico (VQE_for_QC.py), es necesario instalar Qiskit y configurar las credenciales de IBM Quantum dentro del propio código:
 
 ```bash
 pip install qiskit qiskit-ibm-runtime
@@ -55,10 +55,10 @@ pip install qiskit qiskit-ibm-runtime
 ```bash
 service = QiskitRuntimeService(channel="ibm_quantum_platform", token="TOKEN_AQUÍ")
 ```
-**Aviso de Dependencias:** Durante el desarrollo de este proyecto, se detectaron posibles conflictos de versiones entre dependencias clásicas y las herramientas de simulación cuántica. Por ello, **se recomienda encarecidamente crear un entorno virtual limpio de Conda** antes de instalar las librerías.
+**Aviso de Dependencias:** Durante el desarrollo de este proyecto, se detectaron posibles conflictos de versiones entre dependencias clásicas y las herramientas de simulación cuántica. Por ello, **se recomienda crear un entorno virtual limpio de Conda** antes de instalar las librerías.
 
-### 1. Creación del Entorno Virtual (Recomendado)
-Se puede crear y activar un entorno llamado `kitaev_env` (recomendamos Python 3.10 para máxima compatibilidad con Qiskit) usando los siguientes comandos en tu terminal:
+### Creación del Entorno Virtual (Recomendado)
+Se puede crear y activar un entorno llamado `kitaev_env` (Python 3.10 para máxima compatibilidad con Qiskit) usando los siguientes comandos en la terminal:
 
 ```bash
 conda create -n kitaev_env python=3.10
@@ -69,7 +69,7 @@ conda activate kitaev_env
 ## Uso y Ejecución
 
 1. **Simulación Clásica: Diagonalización Exacta (ED):**
-Para correr la solución exacta basada en la matriz de Bogoliubov-de Gennes (BdG) de muchos cuerpos y mapear la física exacta del sistema, ejecuta:
+Para correr la solución exacta basada en la matriz de Bogoliubov-de Gennes (BdG) de muchos cuerpos y mapear la física exacta del sistema:
 ```bash
 python Kitaev_chain_main.py
 ```
@@ -85,7 +85,7 @@ python VQE.py
 * Mitigación de Mínimos Locales: Para evitar quedar atrapado en mínimos locales (problema recurrente debido a los Barren Plateaus), el loop ejecuta 3 intentos aleatorios independientes (attempts=3) para cada valor de μ. El optimizador clásico COBYLA se encarga de minimizar la función de costo calculando los valores esperados energéticos paso a paso.
 * Salida: Grafica el número de partículas promedio comparando la curva obtenida mediante la optimización cuántica variacional heurística frente al resultado teórico de la diagonalización clásica.
 
-3. **Ejecución Cuántica Real: Qiskit Runtime Primitives (IBM QPU):**
+3. **Ejecución Cuántica Real (EN PROGRESO):**
 
 Para adaptar y transpolar el circuito variacional con el objetivo de ejecutarlo sobre procesadores cuánticos NISQ reales en la nube de IBM Quantum:
 ```bash
