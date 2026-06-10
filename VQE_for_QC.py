@@ -97,7 +97,7 @@ t= -1
 delta = 1
 H_matrix = Hamiltonian(N,mu_test,t,delta)
 
-#Revisa si puedes cambiar este al otro que tienes en numpy
+
 def build_qiskit_ansatz(N=3, layers=2):
     """Builds the quantum circuit for the hardware-efficient Ansatz."""
     # Create a circuit with N qubits
@@ -109,13 +109,13 @@ def build_qiskit_ansatz(N=3, layers=2):
     
     param_idx = 0
     
-    # Initial Rotations
+
     for q in range(N):
         qc.ry(thetas[param_idx], q)
         qc.rz(thetas[param_idx+1], q)
         param_idx += 2
         
-    # Repeating Entanglement and Rotation Layers
+
     for layer in range(layers):
         # Entanglement (CNOTs between 0-1 and 1-2)
         qc.cx(0, 1)
@@ -140,7 +140,6 @@ print(qubit_hamiltonian)
 from qiskit.primitives import StatevectorEstimator as Estimator
 from scipy.optimize import minimize
 
-# Initialize the circuit and the measurement engine
 ansatz_circuit, theta_params = build_qiskit_ansatz(N=3, layers=2)
 estimator = Estimator()
 
@@ -203,12 +202,10 @@ def hardware_cost_function(angle_values):
     job = hardware_estimator.run([pub])
     
     result = job.result()
-    # Valor de expectación
     energy = result[0].data.evs
     
     return float(energy)
 
-#  Run the VQE on the real QC
 initial_angles = np.random.uniform(0, 2*np.pi, 18)
 
 print("Starting hardware optimization. This may take hours depending on the queue...")
@@ -222,4 +219,4 @@ print(f"Real VQE Energy Found: {result.fun:.6f}")
 print("========================================")
 
 #Remember to make a plot here, also should change this code to make a session and send that instead
-#of sending the code over and over again to the QC, that's how i lost all that time anyways.
+#of sending the code over and over again to the QC, that's how i lost all that time anyways... why are you talking to yourself.
